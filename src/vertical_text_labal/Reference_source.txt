@@ -1,0 +1,2 @@
+Text rotated JLabel 縦書きJLabel･･･は無理なので左右回転文字で (JLabel)
+http://qoofast.blog76.fc2.com/blog-entry-10.html
