@@ -17,8 +17,6 @@ import javax.swing.JPanel;
 
 public class Clock extends JFrame implements ActionListener{
 
-	
-
 	JLabel Timestamp_yMd;//名前
 	JLabel Timestamp_Hms;//名前
 	
