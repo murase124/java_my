@@ -22,7 +22,6 @@ public class Clock extends JFrame implements ActionListener{
 	
 	
 	Clock(JPanel cardPanel){
-	// TODO 自動生成されたコンストラクター・スタブ
 		
 		JPanel p = new JPanel();
 		p.setLayout(null);
@@ -64,7 +63,6 @@ public class Clock extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO 自動生成されたメソッド・スタブ
 	}
 	
 	public String Timestamp_yMd() {
