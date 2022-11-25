@@ -47,7 +47,12 @@ public class vertical_text extends JPanel{
 	//文字列を分ける
 	String int_text = "";
 	public void main_process(String string) {
-		if(color != null) setBackground(color);	
+		if(color != null) {
+			setBackground(color);	
+			setOpaque(true);
+		}else {
+			setOpaque(false);
+		}
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 
 		String[] strArray = string.split("");
