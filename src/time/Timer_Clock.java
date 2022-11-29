@@ -7,6 +7,9 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -33,7 +36,7 @@ public class Timer_Clock extends JPanel {
 		JPanel p = new JPanel();
 		p.setBackground(new Color(150,150,150));
 		
-		//timer value value_setting 
+		//タイマー 値　値の設定
 		JPanel pdispre = new JPanel();
 		pdispre.setLayout(new BoxLayout(pdispre, BoxLayout.Y_AXIS));
 		
@@ -41,28 +44,52 @@ public class Timer_Clock extends JPanel {
 		pdispre.add(timer_JPanel()); //タイマー数値配置
 		pdispre.add(DOWN_JPanel()); //タイマーマイナスボタン配置
 		
-		//timer start
+		//タイマー　動かす　値リセット
+		JPanel motion = new JPanel();
+		motion.setLayout(new BoxLayout(motion, BoxLayout.X_AXIS));
+		
+		motion.add(start_stop_JPanel());//タイマー スタート　ストップ
+		motion.add(reset_JPanel());//タイマー リセット
+		
+		
+		p.add(BorderLayout.CENTER, pdispre);
+		p.add(BorderLayout.WEST, motion);
+		
+		//new Opaque_change(p);
+		p.setOpaque(true);
+		
+		cardPanel.add(p, "Timer");
+		
+	}
+	
+	public JPanel start_stop_JPanel() {
+		
 		vertical_text start = new vertical_text("スタート");
 		vertical_text stop = new vertical_text("ストップ");
 		start_stop_Panel = new JPanel();
 		start_stop_Panel.setLayout(layout);
 		start_stop_Panel.add(start , "start");
 		start_stop_Panel.add(stop , "stop");
-		start_stop_Panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		start_stop_Panel.addMouseListener(new start());
+		start_stop_Panel.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
+		start.addMouseListener(new start());
 		
-		p.add(BorderLayout.CENTER,pdispre);
-		p.add(BorderLayout.WEST,start_stop_Panel);
-		
-		//new Opaque_change(p);
-		p.setOpaque(true);
-		start_stop_Panel.setOpaque(true);
-		start_stop_Panel.setBackground(Color.orange);
-		
-		cardPanel.add(p, "Timer");
+		return start_stop_Panel;
 	}
 	
-	
+	public JPanel reset_JPanel() {
+		
+		vertical_text reset = new vertical_text("リセット");
+		reset.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 7));
+
+		reset.addMouseListener(new MouseAdapter() {
+			 public void mouseClicked(MouseEvent e)  
+		    {  
+		    	reset_all();
+		    	return;
+		    }
+		});
+		return reset;
+	}
 	
 	
 	public JPanel UP_JPanel() {
@@ -211,7 +238,7 @@ public class Timer_Clock extends JPanel {
 		JPanel pmm = new JPanel();
 		pmm.setLayout(new BoxLayout(pmm, BoxLayout.X_AXIS));
 
-		mm_Seconds = new JLabel("00");
+		mm_Seconds = new JLabel("000");
 		mm_Seconds.setFont(new Font("",Font.PLAIN ,10));
 		mm_Seconds.setOpaque(true);
 		pmm.add(mm_Seconds);
@@ -329,6 +356,9 @@ public class Timer_Clock extends JPanel {
 	public void set_seconds(String text) {
 		 this.seconds.setText(text);
 	}
+	public void set_mm_Seconds(String text) {
+		 this.mm_Seconds.setText(text);
+	}
 	public boolean get_start_flg() {
 		return this.start_flg;
 	}
@@ -341,48 +371,118 @@ public class Timer_Clock extends JPanel {
 	public String get_seconds() {
 		return this.seconds.getText();
 	}
+	public String get_mm_Seconds() {
+		return this.mm_Seconds.getText();
+	}
 	public void reset_mm_Seconds() {
-		this.mm_Seconds.setText("00");
+		this.mm_Seconds.setText("000");
 	}
 	public void reset_all() {
 		this.hour.setText("00");
 		this.minutes.setText("00");
 		this.seconds.setText("00");
-		this.mm_Seconds.setText("00");
+		this.mm_Seconds.setText("000");
 	}
 	
-	
-	class start implements MouseListener{
-		int time_value = 0;
-		Timer timer;
+	class stop implements MouseListener{
 
+		start start;
+		stop(start start){
+			this.start = start;
+		}
+		
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			if(get_start_flg()) return;
+			start.stop();
+			set_start_stop_panel("start");
+			set_start_flg(false);
+			Timestamp target_Timestamp = new Timestamp(System.currentTimeMillis());
+
+			if(start.get_target_Timestamp().compareTo(target_Timestamp) < 0) reset_all();
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {}
+		@Override
+		public void mouseReleased(MouseEvent e) {}
+		@Override
+		public void mouseEntered(MouseEvent e) {}
+		@Override
+		public void mouseExited(MouseEvent e) {}
+		
+	}
+	
+	class start implements MouseListener{
+		Timer timer;
+		Timestamp target_Timestamp;
+		int num=0;
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if(get_start_flg()) {System.out.println("a"); return;}
 			set_start_flg(true);
 			set_start_stop_panel("stop");
-			time_value = (Integer.valueOf(get_hour())*60 + Integer.valueOf(get_minutes()))*60 + Integer.valueOf(get_seconds());
-			time_value = time_value * 100;
+			int time_value = (Integer.valueOf(get_hour())*60 + Integer.valueOf(get_minutes()))*60 + Integer.valueOf(get_seconds());
+			time_value = time_value * 1000;
+			
+			target_Timestamp = new Timestamp(System.currentTimeMillis()+time_value);
+			 SimpleDateFormat sdf = new SimpleDateFormat("HH時mm分ss秒SSS");
+		      String str = sdf.format(target_Timestamp);
+		      num =0;
+
+			System.out.println(str +",b");
 			timer = new Timer();
 			TimerTask timertask = new TimerTask() {
 				@Override
 				public void run() {
-					enter();
-					System.out.println(1);
+					Timestamp timestamp2 = new Timestamp(System.currentTimeMillis());
+					if(target_Timestamp.compareTo(timestamp2) < 0) {
+						end();
+						return;
+					}
+					timer_process(timestamp2,num++);
 				}
 			};
-			timer.schedule(timertask,0, 10);
+			timer.schedule(timertask,0, 6);
 		}
 		
-		public void enter() {
-			this.time_value = this.time_value -1;
-			if(this.time_value <= 0) end();
+		public void timer_process(Timestamp timestamp2, int num) {
+			
+			Timestamp timestamp = new Timestamp(target_Timestamp.getTime() - timestamp2.getTime()-32400000);
+			SimpleDateFormat sdf = new SimpleDateFormat("HH時mm分ss秒SSS");
+			sdf.setTimeZone(TimeZone.getTimeZone("JST"));
+			String str = sdf.format(timestamp);
+
+			sdf = new SimpleDateFormat("HH");
+			str = sdf.format(timestamp);
+		    set_hour(str);
+		    sdf = new SimpleDateFormat("mm");
+			str = sdf.format(timestamp);
+		    set_minutes(str);
+			sdf = new SimpleDateFormat("ss");
+			str = sdf.format(timestamp);
+			set_seconds(str);
+		    sdf = new SimpleDateFormat("SSS");
+			str = sdf.format(timestamp);
+		    set_mm_Seconds(str);
 		}
 		
 		public void end() {
 			timer.cancel();
 			set_start_stop_panel("start");
 			set_start_flg(false);
+			reset_all();
+			target_Timestamp = new Timestamp(System.currentTimeMillis());
+			 SimpleDateFormat sdf = new SimpleDateFormat("HH時mm分ss秒SSS");
+		      String str = sdf.format(target_Timestamp);
+
+			System.out.println(str +",c");
+		}
+		
+		public void stop() {
+			timer.cancel();
+		}
+		public Timestamp get_target_Timestamp() {
+			return this.target_Timestamp;
 		}
 
 		@Override
