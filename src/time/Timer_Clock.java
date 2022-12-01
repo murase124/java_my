@@ -18,8 +18,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
 
+import my_Buttons.My_Button_JPanel_01;
 import vertical_text_labal.vertical_text;
 
 public class Timer_Clock extends JPanel {
@@ -28,7 +28,7 @@ public class Timer_Clock extends JPanel {
 	JLabel minutes = new JLabel("00");//分
 	JLabel seconds = new JLabel("00");//秒
 	JLabel mm_Seconds = new JLabel("000");//秒	
-	JPanel start_stop_Panel;
+	static JPanel start_stop_Panel;
 	CardLayout layout = new CardLayout();
 	Timer up_down_timer;
 	boolean start_flg = false;
@@ -58,7 +58,8 @@ public class Timer_Clock extends JPanel {
 		p.add(BorderLayout.CENTER, pdispre);
 		p.add(BorderLayout.WEST, motion);
 		
-		new Opaque_change(p);
+		String[] names = new String[] {"color"};
+		new Opaque_change(p, names);
 		p.setOpaque(true);
 		
 		cardPanel.add(p, "Timer");
@@ -78,8 +79,8 @@ public class Timer_Clock extends JPanel {
 		start_JPanel.setBackground(Color.orange);
 		start_JPanel.setName("jpanel");
 		start_JPanel.setOpaque(true);
-		start_stop_Panel.setBorder(new LineBorder(new Color(10,10,10),2,true));
-
+		start_stop_Panel.setBorder(new My_Button_JPanel_01());
+		
 		start start = new start();
 		start_JPanel.addMouseListener(start);
 		stop_JPanel.addMouseListener(new stop(start));
@@ -94,11 +95,15 @@ public class Timer_Clock extends JPanel {
 		JPanel jpanel = new JPanel();
 		jpanel.setLayout(new BorderLayout());
 		jpanel.add("Center",reset);
-		jpanel.setBorder(new LineBorder(new Color(10,10,10),2,true));
-		
+		jpanel.setBackground(new Color(151,151,151));
+		jpanel.setName("color");
+		jpanel.setBorder(new My_Button_JPanel_01());
+		jpanel.setOpaque(true);
+
 		reset.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e){  
 		    	reset_all();
+
 		    	return;
 		    }
 		});
@@ -119,7 +124,6 @@ public class Timer_Clock extends JPanel {
 		
 		JLabel delimiter1 = new JLabel(":");
 		delimiter1.setFont(new Font("",Font.PLAIN ,40));
-		delimiter1.setOpaque(true);
 		pd1.add(delimiter1);
 		
 		//区切り
@@ -129,7 +133,6 @@ public class Timer_Clock extends JPanel {
 		
 		JLabel delimiter2 = new JLabel(":");
 		delimiter2.setFont(new Font("",Font.PLAIN ,40));
-		delimiter2.setOpaque(true);
 		pd2.add(delimiter2);
 
 		
@@ -138,7 +141,6 @@ public class Timer_Clock extends JPanel {
 		pH.setLayout(new  BoxLayout(pH, BoxLayout.X_AXIS));
 
 		hour.setFont(new Font("",Font.PLAIN ,40));
-		hour.setOpaque(true);
 		pH.add(hour);
 		
 		//分
@@ -146,7 +148,6 @@ public class Timer_Clock extends JPanel {
 		pm.setLayout(new  BoxLayout(pm, BoxLayout.X_AXIS));
 
 		minutes.setFont(new Font("",Font.PLAIN ,40));
-		minutes.setOpaque(true);
 		pm.add(minutes);
 		
 		//秒
@@ -154,14 +155,12 @@ public class Timer_Clock extends JPanel {
 		ps.setLayout(new  BoxLayout(ps, BoxLayout.X_AXIS));
 
 		seconds.setFont(new Font("",Font.PLAIN ,40));
-		seconds.setOpaque(true);
 		ps.add(seconds);
 		
 		JPanel pmm = new JPanel();
 		pmm.setLayout(new BoxLayout(pmm, BoxLayout.X_AXIS));
 
 		mm_Seconds.setFont(new Font("",Font.PLAIN ,10));
-		mm_Seconds.setOpaque(true);
 		pmm.add(mm_Seconds);
 		pmm.setBorder(BorderFactory.createEmptyBorder(20, 1, 0, 0));
 		
@@ -189,7 +188,6 @@ public class Timer_Clock extends JPanel {
 		hour_up = new JLabel("上");
 		hour_up.setFont(new Font("",Font.PLAIN ,15));
 		hour_up.setBorder(BorderFactory.createEmptyBorder(3, 15, 3, 15));
-		hour_up.setOpaque(true);
 		hour_up.addMouseListener(new up_down_MouseListener(true, hour, 100)); 
 		phup.add(hour_up);
 
@@ -203,7 +201,6 @@ public class Timer_Clock extends JPanel {
 		minutes_up = new JLabel("上");
 		minutes_up.setFont(new Font("",Font.PLAIN ,15));
 		minutes_up.setBorder(BorderFactory.createEmptyBorder(3, 15, 3, 15));
-		minutes_up.setOpaque(true);
 		minutes_up.addMouseListener(new up_down_MouseListener(true, minutes, 60)); 
 		pmup.add(minutes_up);
 
@@ -217,10 +214,9 @@ public class Timer_Clock extends JPanel {
 		seconds_up = new JLabel("上");
 		seconds_up.setFont(new Font("",Font.PLAIN ,15));
 		seconds_up.setBorder(BorderFactory.createEmptyBorder(3, 15, 3, 15));
-		seconds_up.setOpaque(true);
 		seconds_up.addMouseListener(new up_down_MouseListener(true, seconds, 60)); 
 		psup.add(seconds_up);
-
+		
 		
 		pup.add(phup);
 		pup.add(pmup);
@@ -244,7 +240,6 @@ public class Timer_Clock extends JPanel {
 		hour_down = new JLabel("下");
 		hour_down.setFont(new Font("",Font.PLAIN ,15));
 		hour_down.setBorder(BorderFactory.createEmptyBorder(3, 15, 3, 15));
-		hour_down.setOpaque(true);
 		hour_down.addMouseListener(new up_down_MouseListener(false, hour, 100)); 
 		phdown.add(hour_down);
 		
@@ -257,7 +252,6 @@ public class Timer_Clock extends JPanel {
 		minutes_down = new JLabel("下");
 		minutes_down.setFont(new Font("",Font.PLAIN ,15));
 		minutes_down.setBorder(BorderFactory.createEmptyBorder(3, 15, 3, 15));
-		minutes_down.setOpaque(true);
 		minutes_down.addMouseListener(new up_down_MouseListener(false, minutes, 60)); 
 		pmdown.add(minutes_down);
 		
@@ -270,7 +264,6 @@ public class Timer_Clock extends JPanel {
 		seconds_down= new JLabel("下");
 		seconds_down.setFont(new Font("",Font.PLAIN ,15));
 		seconds_down.setBorder(BorderFactory.createEmptyBorder(3, 15, 3, 15));
-		seconds_down.setOpaque(true);
 		seconds_down.addMouseListener(new up_down_MouseListener(false, seconds, 60)); 
 		psdown.add(seconds_down);
 		
@@ -281,6 +274,7 @@ public class Timer_Clock extends JPanel {
 				
 	}
 	
+	//フィールド値関係のメソッド
 	public void set_start_stop_panel(String name) {
 		layout.show(start_stop_Panel, name);
 	}
@@ -306,7 +300,8 @@ public class Timer_Clock extends JPanel {
 		this.seconds.setText("00");
 		this.mm_Seconds.setText("000");
 	}
-	
+	//フィールド値関係のメソッド　ここまで
+
 	class up_down_MouseListener implements MouseListener{
 		int max;
 		boolean flg;
@@ -459,6 +454,8 @@ public class Timer_Clock extends JPanel {
 
 
 
+
+
 class Opaque_change {
 	
 	boolean Opaque_flg = false;
@@ -500,7 +497,7 @@ class Opaque_change {
 					Opaques_no_panel((JComponent) jpanel.getComponent(i));
 				}
 			}
-			if(!name_flg || jpanel.getName() == null) {
+			if(!name_flg && names == null || jpanel.getName() == null) {
 				jpanel.setOpaque(Opaque_flg);
 			}else if(names != null) {
 				boolean flg = true;
