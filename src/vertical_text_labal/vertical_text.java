@@ -9,43 +9,83 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class vertical_text extends JPanel{
-
+	String string = "";
 	Font font = null;
 	Color color = null;
 	boolean two_digits_flg = true; //数字が２個の場合　横並びで記載
 	boolean alphabet_beside_flg = true; //英字を　右回転で横で記載
-	
-	public vertical_text(String string) {
-		main_process(string);
+	String int_text = "";
+
+	public vertical_text() {
 	}
-	public vertical_text(String string, Font font) {
+	public vertical_text(String string) {
+		this.string = string;
+		
+		update();
+	}
+	public vertical_text(Font font) {
 		this.font = font;
 		
-		main_process(string);
+		update();
+	}
+	public vertical_text(Color color) {
+		this.color = color;	
+		
+		update();
+	}
+	public vertical_text(String string, Font font) {
+		this.string = string;
+		this.font = font;
+		
+		update();
 	}
 	
 	public vertical_text(String string, Color color) {
-		this.color = color;		
+		this.string = string;
+		this.color = color;
 		
-		main_process(string);
+		update();
 	}
 	public vertical_text(String string, Font font, Color color) {
+		this.string = string;
 		this.font = font;
 		this.color = color;
 		
-		main_process(string);
+		update();
 	}
 	public vertical_text(String string, Font font, Color color, boolean two_digits_flg, boolean alphabet_beside_flg) {
+		this.string = string;
 		this.font = font;
 		this.color = color;
 		this.two_digits_flg = two_digits_flg;
 		this.alphabet_beside_flg = alphabet_beside_flg;
 		
-		main_process(string);
+		update();
+	}
+	
+	
+	public void set_string(String string) {
+		this.string = string;
+		main_process(this.string);
+	}public void set_font(Font font) {
+		this.font = font;
+		update();
+	}public void set_color(Color color) {
+		this.color = color;
+		update();
+	}public void set_two_digits_flg(boolean two_digits_flg) {
+		this.two_digits_flg = two_digits_flg;
+		update();
+	}public void set_alphabet_beside_flg(boolean alphabet_beside_flg) {
+		this.alphabet_beside_flg = alphabet_beside_flg;
+		update();
+	}public void update() {
+		main_process(this.string);
+	}public String get_string() {
+		return this.string;
 	}
 	
 	//文字列を分ける
-	String int_text = "";
 	public void main_process(String string) {
 		if(color != null) {
 			setBackground(color);	

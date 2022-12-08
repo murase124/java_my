@@ -3,7 +3,9 @@ package time;
 	import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -14,12 +16,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.OverlayLayout;
 
-import my_Buttons.My_Button_JPanel_01;
+import my_Buttons.my_Button_01.My_Button_JPanel_01;
 import vertical_text_labal.vertical_text;
 
 public class Timer_Clock extends JPanel {
@@ -52,13 +56,14 @@ public class Timer_Clock extends JPanel {
 		motion.setLayout(new BoxLayout(motion, BoxLayout.X_AXIS));
 		
 		motion.add(start_stop_JPanel());//タイマー スタート　ストップ
+		motion.add(Box.createRigidArea(new Dimension(3,10)));
 		motion.add(reset_JPanel());//タイマー リセット
-		
+
 		
 		p.add(BorderLayout.CENTER, pdispre);
 		p.add(BorderLayout.WEST, motion);
 		
-		String[] names = new String[] {"color"};
+		String[] names = new String[] {"jpanel","color"};
 		new Opaque_change(p, names);
 		p.setOpaque(true);
 		
@@ -70,35 +75,37 @@ public class Timer_Clock extends JPanel {
 		
 		vertical_text start_JPanel = new vertical_text("スタート");
 		vertical_text stop_JPanel = new vertical_text("ストップ");
+		JPanel border_Line_Panel = new JPanel();
 		start_stop_Panel = new JPanel();
+		border_Line_Panel.setLayout(new GridLayout());
+		border_Line_Panel.add(start_stop_Panel);
 		start_stop_Panel.setLayout(layout);
+		start_stop_Panel.setName("color");
 		start_stop_Panel.add(start_JPanel , "start");
 		start_stop_Panel.add(stop_JPanel , "stop");
 		start_JPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
 		stop_JPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
-		start_JPanel.setBackground(Color.orange);
-		start_JPanel.setName("jpanel");
-		start_JPanel.setOpaque(true);
-		start_stop_Panel.setBorder(new My_Button_JPanel_01());
+		My_Button_JPanel_01 my_button = new My_Button_JPanel_01(start_stop_Panel);
+		start_JPanel.addMouseListener(my_button);
+		stop_JPanel.addMouseListener(my_button);
 		
 		start start = new start();
 		start_JPanel.addMouseListener(start);
 		stop_JPanel.addMouseListener(new stop(start));
-		
-		return start_stop_Panel;
+		return border_Line_Panel;
 	}
 	
 	public JPanel reset_JPanel() {
 		vertical_text reset = new vertical_text("リセット");
-		reset.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 7));
-
+		reset.setBorder(BorderFactory.createEmptyBorder(10, 7, 10, 7));
+		JPanel border_Line_Panel = new JPanel();
 		JPanel jpanel = new JPanel();
-		jpanel.setLayout(new BorderLayout());
-		jpanel.add("Center",reset);
-		jpanel.setBackground(new Color(151,151,151));
 		jpanel.setName("color");
-		jpanel.setBorder(new My_Button_JPanel_01());
-		jpanel.setOpaque(true);
+		border_Line_Panel.setLayout(new GridLayout());
+		border_Line_Panel.add(jpanel);
+		jpanel.setLayout(new OverlayLayout(jpanel));
+		jpanel.add(reset);
+		reset.addMouseListener(new My_Button_JPanel_01(jpanel));
 
 		reset.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e){  
@@ -108,7 +115,7 @@ public class Timer_Clock extends JPanel {
 		    }
 		});
 		
-		return jpanel;
+		return border_Line_Panel;
 	}
 	
 	public JPanel timer_JPanel() {
@@ -363,7 +370,8 @@ public class Timer_Clock extends JPanel {
 		Timer timer;
 		Timestamp target_Timestamp;
 		@Override
-		public void mouseClicked(MouseEvent e) {
+		public void mouseClicked(MouseEvent e) {}
+		 public void mousePressed(MouseEvent e) {
 			if(get_start_flg()) {return;}
 			set_start_flg(true);
 			set_start_stop_panel("stop");
@@ -425,7 +433,7 @@ public class Timer_Clock extends JPanel {
 			return this.target_Timestamp;
 		}
 
-		@Override public void mousePressed(MouseEvent e) {}
+		//@Override public void mousePressed(MouseEvent e) {}
 		@Override public void mouseReleased(MouseEvent e) {}
 		@Override public void mouseEntered(MouseEvent e) {}
 		@Override public void mouseExited(MouseEvent e) {}
@@ -472,7 +480,6 @@ class Opaque_change {
 	}
 	Opaque_change(JPanel jpanel, String names[]) {
 		this.names = names;
-		System.out.println(names[0]);
 		Opaques_panel(jpanel);
 	}
 	Opaque_change(JPanel jpanel , boolean Opaque_flg, String names[]) {
@@ -505,14 +512,16 @@ class Opaque_change {
 					if(string.equals(jpanel.getName())) flg = false;
 				}
 				if(flg) jpanel.setOpaque(Opaque_flg);
+
 			}
+
 		}
 		return;
 	}
 	
 	//パネル以外　
 	public void Opaques_no_panel(JComponent jpanel ) {
-		if(!name_flg || jpanel.getName() == null) {
+		if(!name_flg && names == null || jpanel.getName() == null) {
 			jpanel.setOpaque(Opaque_flg);
 		}else if(names != null) {
 			boolean flg = true;
@@ -520,6 +529,7 @@ class Opaque_change {
 				if(string.equals(jpanel.getName())) flg = false;
 			}
 			if(flg) jpanel.setOpaque(Opaque_flg);
+
 		}
 		return;
 	}

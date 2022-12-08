@@ -1,12 +1,63 @@
 package time;
 
-import java.net.InetAddress;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.awt.GridLayout;
 
-import org.apache.commons.net.ntp.NTPUDPClient;
-import org.apache.commons.net.ntp.NtpV3Packet;
-import org.apache.commons.net.ntp.TimeInfo;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import my_Buttons.My_Button_JPanel;
+import my_Buttons.my_Button_01.My_Button_JPanel_01;
+
+public class test extends JFrame{
+	
+    public static void main(String[] args) {
+    	new test();
+    }
+    
+    
+    test(){
+		setLayout(new GridLayout(2,2));
+
+		JPanel j = new JPanel();
+		
+		
+    	My_Button_JPanel a = new My_Button_JPanel();
+    	a.addMouseListener(new My_Button_JPanel_01(a));
+    	JLabel jl =new JLabel("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    	a.set_text(jl);
+    	a.set_Insets(10,10,10,10);
+    	a.set_Size();
+    	j.add(a);
+    	add(j);
+    	
+
+
+    	setSize(400, 400);
+    	setVisible(true);
+    }
+    
+
+    /*public static void main(String args[]) {
+		JLayeredPane pane = new JLayeredPane();
+
+			int layer = (int)(Math.random() * (400));
+			JButton button = new JButton("レイヤ : " + layer);
+			button.setBounds(20 , 40 , 200 , 50);
+			pane.add(button);
+			pane.setLayer(button , 1);
+		
+
+		JFrame win = new test();
+		win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		win.setBounds(10 , 10 , 400 , 300);
+		win.getContentPane().add(pane);
+		win.setVisible(true);
+	}*/
+   
+
+}
+/*
 
 public class test {
 
@@ -16,7 +67,7 @@ public class test {
      * 独立行政法人情報通信研究機構 (NICT)<br>
      * http://jjy.nict.go.jp/tsp/PubNtp/index.html
      * </p>
-     */
+     *//*
     private static final String NTP_SERVER = "ntp.nict.jp";
 
     public static void main(String[] args) {
@@ -55,3 +106,4 @@ public class test {
         }
     }
 }
+*/
