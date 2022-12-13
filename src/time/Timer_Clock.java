@@ -23,7 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.OverlayLayout;
 
-import my_Buttons.my_Button_01.My_Button_JPanel_01;
+import my_Buttons.My_Button_JPanel_MouseListener;
 import vertical_text_labal.vertical_text;
 
 public class Timer_Clock extends JPanel {
@@ -85,7 +85,7 @@ public class Timer_Clock extends JPanel {
 		start_stop_Panel.add(stop_JPanel , "stop");
 		start_JPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
 		stop_JPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
-		My_Button_JPanel_01 my_button = new My_Button_JPanel_01(start_stop_Panel);
+		My_Button_JPanel_MouseListener my_button = new My_Button_JPanel_MouseListener(start_stop_Panel);
 		start_JPanel.addMouseListener(my_button);
 		stop_JPanel.addMouseListener(my_button);
 		
@@ -105,7 +105,7 @@ public class Timer_Clock extends JPanel {
 		border_Line_Panel.add(jpanel);
 		jpanel.setLayout(new OverlayLayout(jpanel));
 		jpanel.add(reset);
-		reset.addMouseListener(new My_Button_JPanel_01(jpanel));
+		reset.addMouseListener(new My_Button_JPanel_MouseListener(jpanel));
 
 		reset.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e){  
