@@ -15,9 +15,9 @@ class switching implements ActionListener{
     CardLayout layout;
 	JPanel cardPanel;
 	String name;
-	Color_Panel color_panel;
+	ColorPanel color_panel;
 
-	switching(JPanel cardPanel, String name, Color_Panel color_panel){
+	switching(JPanel cardPanel, String name, ColorPanel color_panel){
 		this.cardPanel = cardPanel;
 		this.name = name;
 		this.layout = (CardLayout)cardPanel.getLayout();
@@ -33,17 +33,17 @@ class switching implements ActionListener{
 	
 }
 
-public class SimpleDraw extends JFrame implements ActionListener{
+public class MainSimpleDraw extends JFrame implements ActionListener{
 	public static void main(String[] args) {
-		new SimpleDraw();
+		new MainSimpleDraw();
 	}
 	
 	JPanel cardPanel;
     CardLayout layout;
-    Defalt_color_panel defalt_color_panel ;
-	Slider_color_panel slider_color_panel ;
+    DefaltColorPanel defalt_color_panel ;
+	SliderColorPanel slider_color_panel ;
 	
-	public SimpleDraw() {
+	public MainSimpleDraw() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		cardPanel = new JPanel();
@@ -54,8 +54,8 @@ public class SimpleDraw extends JFrame implements ActionListener{
 		JButton switching_slider = new JButton("変更");
 		
 		MyPanel MyPanel = new MyPanel(Color.BLACK);
-		defalt_color_panel = new Defalt_color_panel(MyPanel,switching_defalt);
-		slider_color_panel  = new Slider_color_panel(MyPanel,switching_slider);
+		defalt_color_panel = new DefaltColorPanel(MyPanel,switching_defalt);
+		slider_color_panel  = new SliderColorPanel(MyPanel,switching_slider);
 		
 		switching_defalt.addActionListener(new switching(cardPanel, "slider", defalt_color_panel));
 		switching_slider.addActionListener(new switching(cardPanel, "defalt", slider_color_panel));

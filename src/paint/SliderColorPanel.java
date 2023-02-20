@@ -18,26 +18,26 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-class Slider_color_panel extends Color_Panel {
+class SliderColorPanel extends ColorPanel {
 	final int RGB_MIN_INDEX_NUM = 0;
 	final int RGB_MAX_INDEX_NUM = 2;
 	final int FAT_INDEX_NUM = 3;
 
 	
 	JSlider[] slider_RGB = new JSlider[3];
-	My_Txtfield_Label[] cardLalabel_RGB = new My_Txtfield_Label[3];
+	MyTxtfieldLabel[] cardLalabel_RGB = new MyTxtfieldLabel[3];
 	String[] string_RGB = new String[] {"Red", "Green", "Blue"};
 	Timer[] timer_card_RGB = new Timer[] {new Timer(),new Timer(),new Timer()};
 
 	JSlider slider_fat;
-	My_Txtfield_Label cardLalabel_fat;
+	MyTxtfieldLabel cardLalabel_fat;
 	String string_fat = new String("太さ");
 	Timer ftimer_card = new Timer();
 
 	MyPanel MyPanel;
 	
 	
-	Slider_color_panel(MyPanel MyPanel_06_end , JButton switching) {
+	SliderColorPanel(MyPanel MyPanel_06_end , JButton switching) {
 		this.MyPanel = MyPanel_06_end;
 		colorpanel(switching);
 	}
@@ -47,7 +47,7 @@ class Slider_color_panel extends Color_Panel {
 		
 		setBackground(new Color(200,200,200));
 		for(int i =0; i <= RGB_MAX_INDEX_NUM; i++) {
-			cardLalabel_RGB[i] = new My_Txtfield_Label("0", new Dimension(40, 20));
+			cardLalabel_RGB[i] = new MyTxtfieldLabel("0", new Dimension(40, 20));
 			cardLalabel_RGB[i].set_label(string_RGB[i]);
 			
 			slider_RGB[i] = new JSlider(0, 255, 0);
@@ -60,7 +60,7 @@ class Slider_color_panel extends Color_Panel {
 			
 			add(cardLalabel_RGB[i]); add(slider_RGB[i]);
 		}
-		cardLalabel_fat = new My_Txtfield_Label("5", new Dimension(40, 20));
+		cardLalabel_fat = new MyTxtfieldLabel("5", new Dimension(40, 20));
 		cardLalabel_fat.set_label(string_fat);
 		
 		slider_fat = new JSlider(1, 100, 5);
@@ -146,10 +146,10 @@ class Slider_color_panel extends Color_Panel {
 		@Override
 		public void keyTyped(KeyEvent e) {
 			if(RGB_MIN_INDEX_NUM <= i_RGB && i_RGB <= RGB_MAX_INDEX_NUM) {
-					new My_Key_Filter(cardLalabel_RGB[i_RGB], e , 255);
+					new MyKeyFilter(cardLalabel_RGB[i_RGB], e , 255);
 			}else
 			if(i_RGB == FAT_INDEX_NUM) {
-				new My_Key_Filter(cardLalabel_fat, e , 100);
+				new MyKeyFilter(cardLalabel_fat, e , 100);
 			}
 		}
 		

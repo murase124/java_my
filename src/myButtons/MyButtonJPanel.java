@@ -1,77 +1,92 @@
-package my_Buttons;
+package myButtons;
 
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Insets;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 
-public class My_Button_JPanel extends JPanel {
+import myButtons.auxiliaryClassList.ChangeLayout;
+import myButtons.myButton00.ChangeLayout00;
 
-	JPanel jpanel = new JPanel();
+public class MyButtonJPanel extends JPanel {
 
-	Border border = null;
+	private JPanel jpanel = new JPanel();
+	private JComponent textcomponent = null;
+	private MyButtonJPanelMouseListener my_Listener;
 	
-	int over_width_height[] = new int[] {0,0};
-	JComponent textcomponent = null;
-	
-	My_Button_JPanel_MouseListener my_Listener;
-	
-	
-	public My_Button_JPanel(){
+	public MyButtonJPanel(){
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		jpanel.setMaximumSize(new Dimension(Short.MAX_VALUE,Short.MAX_VALUE));
 		jpanel.setLayout(new BoxLayout(jpanel, BoxLayout.PAGE_AXIS));
-		my_Listener = new My_Button_JPanel_MouseListener(this);
+		my_Listener = new MyButtonJPanelMouseListener(this);
 
 		addMouseListener(my_Listener);
+		set_Layout(new ChangeLayout00());
+		this.setOpaque(false);
 	}
 	
-	public void set_text(JComponent text) {
+	/*
+	 * addition
+	 * Set_Get
+	 */
+	public void setText(JComponent text) {
 		this.textcomponent = text;
-		add(text);
-		set_Border();
+		if(getComponentCount() != 0)removeAll();//コンポーネントがあるなら削除
+		add(textcomponent);
+	}
+	public void setText(String text) {
+		this.textcomponent = new JLabel(text);
+		if(getComponentCount() != 0)removeAll();//コンポーネントがあるなら削除
+		add(textcomponent);
 	}
 	public JComponent get_text() {
-		return this.textcomponent;
+		return getTextcomponent();
 	}
 	
-	private void set_Border() {
-		if(textcomponent == null || border == null) return;
-		textcomponent.setBorder(border);
+	public void set_Layout(ChangeLayout change_layout) {
+		getMy_Listener().setChangeLayout(change_layout);
+		change_layout.set_panel(this);
+	}
+	public Boolean setCreateEmptyBorder(int top,int left, int bottom, int right) {
+		if(textcomponent == null) return false;
+		textcomponent.setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
+		return true;
 	}
 	
-	public void set_Insets(Insets insets) {
-		border = new Border() {
-			@Override
-			public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {}
-			@Override
-			public boolean isBorderOpaque() {return false;}
-			@Override
-			public Insets getBorderInsets(Component c) {
-				return insets;
-			}
-		};
-		set_Border();
+	/*
+	 * Basic
+	 * Set_Get
+	 */
+	public JPanel getJpanel() {
+		return jpanel;
 	}
-	
-	public void set_Insets(int top,int left, int bottom,int right) {
-		set_Insets(new Insets(top, left, bottom, right));
+
+	public void setJpanel(JPanel jpanel) {
+		this.jpanel = jpanel;
 	}
-	
-	public void set_X_Y(int x,int y) {
-    	setBounds(x, y, getPreferredSize().width,getPreferredSize().height);
-    }
-	public Dimension get_Size() {
-    	return getPreferredSize();
-    }
-	
-	public My_Button_JPanel_MouseListener get_Listener() {
+
+
+	public JComponent getTextcomponent() {
+		return textcomponent;
+	}
+
+	public void setTextcomponent(JComponent textcomponent) {
+		this.textcomponent = textcomponent;
+	}
+
+	public MyButtonJPanelMouseListener getMy_Listener() {
 		return my_Listener;
 	}
+
+	public void setMy_Listener(MyButtonJPanelMouseListener my_Listener) {
+		this.my_Listener = my_Listener;
+	}
+
+	
+
+	 
 	
 }

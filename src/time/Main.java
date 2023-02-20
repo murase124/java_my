@@ -16,43 +16,54 @@ import javax.swing.border.LineBorder;
 
 public class Main  extends JFrame {
 	
+	private JPanel cardPanel;
+	private CardLayout layout;
+	private JLabel clock_bu;
+	private JLabel timer_bu;
+	private static Clock clock;
+	private static TimerClock timerclock;
+    
+    final public static String cardPanelName_Clock = "Clock";
+    final public static String cardPanelName_Timer = "Timer";
+    
 	public static void main(String[] args){
 		Main main = new Main();
-		new Clock(main.cardPanel);
-		new Timer_Clock(main.cardPanel);
-		main.layout.show(main.cardPanel, "Clock");
+		clock = new Clock(main.cardPanel);
+		timerclock = new TimerClock(main.cardPanel);
+		main.layout.show(main.cardPanel, cardPanelName_Clock);
 		main.setVisible(true);
 	}
 	
-	JPanel cardPanel;
-    CardLayout layout;
-    JLabel clock_bu;
-    JLabel timer_bu;
+	
     
 	public Main() {
 		  // CardLayout用パネル
         cardPanel = new JPanel();
         layout = new CardLayout();
         cardPanel.setLayout(layout);
+        cardPanel.setOpaque(false);
         
         //切り替えボタンパネル
         JPanel phome = new JPanel();
-        phome.setBackground(new Color(150,150,150));
+        phome.setOpaque(false);
         
         //Clock移動ボタン
         JPanel pclock = new JPanel();
         pclock.setLayout(new BorderLayout());
         pclock.setBorder(new LineBorder(new Color(10,10,10),2,true));
-        pclock.setBackground(new Color(150,150,150));
-
+        pclock.setBackground(new Color(160,160,160));
+        
         clock_bu = new JLabel("時間");
         clock_bu.setBorder(BorderFactory.createEmptyBorder(1, 4, 1, 4));
         clock_bu.setFont(new Font("",Font.BOLD ,13));
         clock_bu.addMouseListener(new MouseAdapter()  
 		{  
+        	@Override
 		    public void mouseClicked(MouseEvent e)  
 		    {  
-				layout.show(cardPanel, "Clock");
+				layout.show(cardPanel, cardPanelName_Clock);
+				clock.setOffset();
+				clock.clockprocess();
 		    	return;
 		    }  
 		}); 
@@ -68,9 +79,11 @@ public class Main  extends JFrame {
 		timer_bu.setFont(new Font("",Font.BOLD ,13));
 		timer_bu.addMouseListener(new MouseAdapter()  
 		{  
+			@Override
 		    public void mouseClicked(MouseEvent e)  
 		    {  
-				layout.show(cardPanel, "Timer");
+				layout.show(cardPanel, cardPanelName_Timer);
+				clock.cancel();
 		    	return;
 		    }  
 		}); 
@@ -86,5 +99,7 @@ public class Main  extends JFrame {
 		
 		getContentPane().add(cardPanel, BorderLayout.CENTER);
 		getContentPane().add(phome, BorderLayout.PAGE_END);
+		getContentPane().setBackground(new Color(150,150,150));
+
 	}
 }

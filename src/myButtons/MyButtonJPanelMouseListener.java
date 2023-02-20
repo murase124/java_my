@@ -1,4 +1,4 @@
-package my_Buttons;
+package myButtons;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -6,85 +6,115 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
-public class My_Button_JPanel_MouseListener implements MouseListener {
+import myButtons.auxiliaryClassList.BackgroundColor;
+import myButtons.auxiliaryClassList.ChangeLayout;
+import myButtons.auxiliaryClassList.MyButtonJPanelBorders;
+import myButtons.myButton00.ChangeLayout00;
 
-	int color_num =0;
-	JPanel jpanel;
-	public Color[] background_color = new Color[2];
-	My_Button_JPanel_Border[] border =new My_Button_JPanel_Border[2];
+public class MyButtonJPanelMouseListener implements MouseListener {
+
+	private JPanel jpanel;
+	private BackgroundColor backgroundColor;
+	private MyButtonJPanelBorders border = new MyButtonJPanelBorders();
+	private ChangeLayout changeLayout = new ChangeLayout() {@Override public void changeLayout(String comand) {}};
 	
-	public My_Button_JPanel_MouseListener(JPanel jpanel) {
-		background_color[0] = new Color(255,255,255);
-		background_color[1] = new Color(255,255,255);
-		 border[0] =new My_Button_JPanel_Border();
-		 border[1] =new My_Button_JPanel_Border();
+		
+	/*
+	 * Basic
+	 * Get_Set
+	 */
+	public JPanel getJPanel() {
+		return jpanel;
+	}
+	public void setJPanel(JPanel jpanel) {
 		this.jpanel = jpanel;
-		this.jpanel.setBorder(border[0]);
-		this.change_Background_Color(0);
-		this.jpanel.setOpaque(true);
+	}
+	public MyButtonJPanelBorders getBorder() {
+		return border;
+	}
+	public void setBorder(MyButtonJPanelBorders border) {
+		this.border = border;
+		changeLayout(changeLayout.NOW);
+	}
+	public BackgroundColor getBackgroundColor() {
+		return backgroundColor;
 	}
 	
-	private void change_Button_Layout(int num) {
-		if(num == 0) {
-			change_Background_Color(0);
-		}else if(num == 1) {
-			this.jpanel.setBorder(border[0]);
-			change_Background_Color(1);
-		}else if(num == 2) {
-			this.jpanel.setBorder(border[1]);
-		}
+	public ChangeLayout getChangeLayout() {
+		return changeLayout;
+	}
+	public void setChangeLayout(ChangeLayout change_layout) {
+		this.changeLayout = change_layout;
+	}
+
+	/*
+	 * Basic
+	 * Get_Set END
+	 */
+	
+	public MyButtonJPanelMouseListener(JPanel jpanel) {
+		backgroundColor = new BackgroundColor();
+		this.setJPanel(jpanel);
+		this.getJPanel().setBorder(getBorder().get(getBorder().NORMAL));
+		this.changeLayout(changeLayout.NOW);
+		this.getJPanel().setOpaque(true);
+	}
+	private void changeLayout(String comand) {
+		changeLayout.changeLayout(comand);
 	}
 	
-	private Color change_Background_Color(int num) {
-		jpanel.setBackground(background_color[num]);
-		return background_color[num];
+	public void changeBackgroundColor(String key) {
+		getJPanel().setBackground(backgroundColor.get(key));
 	}
 	
 	@Override
 	public void mouseEntered(MouseEvent e){  
-		change_Button_Layout(++color_num);
+		changeLayout(changeLayout.ENTERED);
     	return;
     }
 	
 	@Override
 	public void mouseExited(MouseEvent e){  
-		change_Button_Layout(--color_num);
+		changeLayout(changeLayout.EXITED);
     	return;
     }
 	
 	@Override
-	public void mouseClicked(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {
+	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		change_Button_Layout(++color_num);
+		changeLayout(changeLayout.PRESSED);
     	return;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		change_Button_Layout(--color_num);
+		changeLayout(changeLayout.RELEASED);
     	return;
 	}
-
-	public boolean set_Background_Color(int num, Color color) {
-		if(0 > num && num > 1) return false;
-		background_color[num] = color;
-		change_Button_Layout(color_num);
-		return true;
+	
+	/*
+	 * addition
+	 * Set
+	 */
+	public void setBackgroundColor_FOCUS(Color color) {
+		backgroundColor.set(backgroundColor.FOCUS ,color);
+		changeLayout(changeLayout.NOW);
 	}
-	public boolean set_Background_Color(Color color1, Color color2) {
-		return set_Background_Color(new Color[] {color1,color2});
+	public void setBackgroundColor_NOFOCUS(Color color) {
+		backgroundColor.set(backgroundColor.NOFOCUS ,color);
+		changeLayout(changeLayout.NOW);
 	}
-	public boolean set_Background_Color(Color[] color) {
-		if(color.length != 2) return false;
-		background_color = color;
-		change_Button_Layout(color_num);
-		return true;
-	}
-	public My_Button_JPanel_Border[] get_Border() {
-		return border;
+	public void setBackgroundColor(Color noFocus, Color focus) {
+		setBackgroundColor_NOFOCUS(noFocus);
+		setBackgroundColor_FOCUS(focus);
 	}
 	
-
+	
+	MyButtonJPanelMouseListener(){
+		setChangeLayout(new ChangeLayout00());
+	}
 }
+

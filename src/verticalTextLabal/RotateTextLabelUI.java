@@ -1,4 +1,4 @@
-package vertical_text_labal;
+package verticalTextLabal;
 
 import java.awt.Dimension;
 import java.awt.FontMetrics;

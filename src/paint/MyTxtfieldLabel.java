@@ -13,34 +13,34 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class My_Txtfield_Label extends JPanel {
+public class MyTxtfieldLabel extends JPanel {
 	
 	CardLayout layout = new CardLayout();
 	JTextField textfield = new JTextField();
 	JLabel jlabel = new JLabel();
 	String value = new String();
 
-	My_Txtfield_Label(){
+	MyTxtfieldLabel(){
 		constructor();
 	}
-	My_Txtfield_Label(String text){
+	MyTxtfieldLabel(String text){
 		set_value(text);
 		constructor();
 	}
-	My_Txtfield_Label(int text){
+	MyTxtfieldLabel(int text){
 		set_value(text);
 		constructor();
 	}
-	My_Txtfield_Label(Dimension size){
+	MyTxtfieldLabel(Dimension size){
 		setPreferredSize(size);
 		constructor();
 	}
-	My_Txtfield_Label(String text, Dimension size){
+	MyTxtfieldLabel(String text, Dimension size){
 		set_value(text);
 		setPreferredSize(size);
 		constructor();
 	}
-	My_Txtfield_Label(int text, Dimension size){
+	MyTxtfieldLabel(int text, Dimension size){
 		set_value(text);
 		setPreferredSize(size);
 		constructor();

@@ -21,7 +21,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-class Defalt_color_panel extends Color_Panel{
+class DefaltColorPanel extends ColorPanel{
 	
 	MyPanel MyPanel;
 
@@ -35,7 +35,7 @@ class Defalt_color_panel extends Color_Panel{
 		
 	//濃さ
 	JSlider sl = new JSlider(0, 510 , 255);
-	My_Txtfield_Label cardLalabel_Darkness;
+	MyTxtfieldLabel cardLalabel_Darkness;
 	Timer timer = new Timer("Darkness");
 		
 	//線太さ
@@ -45,7 +45,7 @@ class Defalt_color_panel extends Color_Panel{
 	//カラーパレット
 	JButton bu = new JButton("色");
 	
-	Defalt_color_panel(MyPanel MyPanel , JButton switching){
+	DefaltColorPanel(MyPanel MyPanel , JButton switching){
 		this.MyPanel = MyPanel;
 		colorpanel(switching);
 	}
@@ -74,7 +74,7 @@ class Defalt_color_panel extends Color_Panel{
 		sl.addChangeListener(new darknessListener());
 		sl.setPreferredSize(new Dimension(140, 20));
 		
-		cardLalabel_Darkness = new My_Txtfield_Label("0",new Dimension(25, 20));
+		cardLalabel_Darkness = new MyTxtfieldLabel("0",new Dimension(25, 20));
 		cardLalabel_Darkness.set_label("濃さ");
 		cardLalabel_Darkness.textfield.addKeyListener(new darknessListener());
 		cardLalabel_Darkness.textfield.addActionListener(new darknessListener());
@@ -185,7 +185,7 @@ class Defalt_color_panel extends Color_Panel{
 		//フィルター
 		@Override
 		public void keyTyped(KeyEvent e) {
-			new My_Key_Filter(cardLalabel_Darkness,e,510);
+			new MyKeyFilter(cardLalabel_Darkness,e,510);
 		}
 
 		@Override

@@ -1,4 +1,4 @@
-package vertical_text_labal;
+package verticalTextLabal;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -8,7 +8,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class vertical_text extends JPanel{
+public class VerticalText extends JPanel{
 	String string = "";
 	Font font = null;
 	Color color = null;
@@ -16,57 +16,45 @@ public class vertical_text extends JPanel{
 	boolean alphabet_beside_flg = true; //英字を　右回転で横で記載
 	String int_text = "";
 
-	public vertical_text() {
+	public VerticalText() {
 	}
-	public vertical_text(String string) {
+	public VerticalText(String string) {
 		this.string = string;
 		
-		update();
+		setText(string);
 	}
-	public vertical_text(Font font) {
-		this.font = font;
-		
-		update();
-	}
-	public vertical_text(Color color) {
-		this.color = color;	
-		
-		update();
-	}
-	public vertical_text(String string, Font font) {
+	public VerticalText(String string, Font font) {
 		this.string = string;
 		this.font = font;
 		
-		update();
+		setText(string);
 	}
 	
-	public vertical_text(String string, Color color) {
+	public VerticalText(String string, Color color) {
 		this.string = string;
 		this.color = color;
 		
-		update();
+		setText(string);
 	}
-	public vertical_text(String string, Font font, Color color) {
+	public VerticalText(String string, Font font, Color color) {
 		this.string = string;
 		this.font = font;
 		this.color = color;
 		
-		update();
+		setText(string);
 	}
-	public vertical_text(String string, Font font, Color color, boolean two_digits_flg, boolean alphabet_beside_flg) {
-		this.string = string;
+	public VerticalText(String string, Font font, Color color, boolean two_digits_flg, boolean alphabet_beside_flg) {
 		this.font = font;
 		this.color = color;
 		this.two_digits_flg = two_digits_flg;
 		this.alphabet_beside_flg = alphabet_beside_flg;
 		
-		update();
+		setText(string);
 	}
 	
-	
-	public void set_string(String string) {
+	public void setText(String string) {
 		this.string = string;
-		main_process(this.string);
+		update();
 	}public void set_font(Font font) {
 		this.font = font;
 		update();
@@ -87,6 +75,9 @@ public class vertical_text extends JPanel{
 	
 	//文字列を分ける
 	public void main_process(String string) {
+		 removeAll();
+	     repaint();
+	        
 		if(color != null) {
 			setBackground(color);	
 			setOpaque(true);

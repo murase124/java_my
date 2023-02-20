@@ -1,4 +1,4 @@
-package vertical_text_labal;
+package verticalTextLabal;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -22,7 +22,7 @@ public class test extends JFrame{
 	p1.setBackground(Color.yellow);
 	p1.setLayout(new BoxLayout(p1,BoxLayout.Y_AXIS));
 	Font font = new Font("",Font.PLAIN ,30);
-	vertical_text p = new vertical_text("あたらしいあさがきた、aAB。333", font ,new Color(
+	VerticalText p = new VerticalText("あたらしいあさがきた、aAB。333", font ,new Color(
 			(int) (Math.random()*256),
 			(int) (Math.random()*256),
 			(int) (Math.random()*256)));

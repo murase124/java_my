@@ -17,11 +17,13 @@ class MyPanel extends JPanel implements MouseListener, MouseMotionListener{
 	Color color = new Color(0,0,0);
 	int concentration = 0; //濃さ
 	Image image=createImage(getWidth(),getHeight());
+	JPanel my;
 	
 	int size = 5;
 
 	
 	public MyPanel() {
+		my = this;
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		setBackground(Color.WHITE);
@@ -104,22 +106,24 @@ class MyPanel extends JPanel implements MouseListener, MouseMotionListener{
 	
 	public void mypaint(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-				 Graphics g=image.getGraphics(); 
-				for(int i=0;i<3;i++) 
-					if(color_int[i]+concentration <= 255)
-					{
-						if(color_int[i]+concentration >= 0) {
-							color_box[i] = color_int[i]+concentration;
-						}else {
-							color_box[i] = 0;
-						}
-					}else {
-						color_box[i] = 255;
-					}
-				color = new Color(color_box[0], color_box[1], color_box[2]);
-				g.setColor(color);
-				g.fillRect(e.getX() - size/2, e.getY() - size/2, size, size);
-				paint_update();	
+		
+		
+		 Graphics g=image.getGraphics(); 
+		for(int i=0;i<3;i++) 
+			if(color_int[i]+concentration <= 255)
+			{
+				if(color_int[i]+concentration >= 0) {
+					color_box[i] = color_int[i]+concentration;
+				}else {
+					color_box[i] = 0;
+				}
+			}else {
+				color_box[i] = 255;
+			}
+		color = new Color(color_box[0], color_box[1], color_box[2]);
+		g.setColor(color);
+		g.fillRect(e.getX() - size/2, e.getY() - size/2, size, size);
+
 	}
 	
 	@Override

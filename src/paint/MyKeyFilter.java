@@ -2,9 +2,9 @@ package paint;
 
 import java.awt.event.KeyEvent;
 
-public class My_Key_Filter {
+public class MyKeyFilter {
 	
-	My_Key_Filter(My_Txtfield_Label cardLabel, KeyEvent e, int Max){
+	MyKeyFilter(MyTxtfieldLabel cardLabel, KeyEvent e, int Max){
 		
 		String color_num = cardLabel.get_value();
 		int CaretPosition = cardLabel.textfield.getSelectionStart()+1;
