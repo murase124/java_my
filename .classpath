@@ -22,7 +22,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/user/Documents/プログラミング技法Ⅱ(Java)/DB用/mysql-connector-j-8.0.31/mysql-connector-j-8.0.31.jar"/>
+	<classpathentry kind="lib" path="C:/Users/user/Documents/Java/DB用/mysql-connector-j-8.0.31/mysql-connector-j-8.0.31.jar"/>
 	<classpathentry kind="lib" path="C:/hsqldb/hsqldb-2.7.1/hsqldb/lib/hsqldb.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -226,8 +226,9 @@ public class DayList {
 		
 		//今月の最初の曜日までの穴埋め
 		for(int i =--backLastWeek; i >= 0;i--) {
-			time = timMmolding(backCalendar, i-backlastDay);
-			setAll(updateKey, String.valueOf(i+backlastDay), time);
+			time = timMmolding(backCalendar, backlastDay-i);
+
+			setAll(updateKey, String.valueOf(backlastDay-i), time);
 			updateKey++;
 		}
 		//今月
@@ -239,6 +240,8 @@ public class DayList {
 		//余りを穴埋め
 		for(int i =1; updateKey < DAYBUTTONMAX;i++) {
 			time = timMmolding(nextCalendar, i);
+			System.out.println(i + "./." +time);
+
 			setAll(updateKey, String.valueOf(i), time);
 			updateKey++;
 		}
