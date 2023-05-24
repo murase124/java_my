@@ -136,7 +136,7 @@ public class DayList01 {
 	}
 	
 	/*
-	 * DayList
+	 * Day
 	 * JBuutonをDAYBUTTONMAX個作成
 	 * フォント設定
 	 * フォントカラー　日曜　赤色、　土曜　青色

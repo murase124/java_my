@@ -1,25 +1,84 @@
 package calen01;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Schedule {
 
-	// keyの値　１個目○○年○○月　２個目○○日　valuesの値　予定のID
-		private Map<Integer, Map<Integer, ArrayList<Integer>>> scheduleID = new HashMap<>();
-		// keyの値　１個目○○年○○月　２個目○○日　3個目ID　valuesの値　予定のタイトル
-		private Map<Integer, Map<Integer, Map<Integer, String>>> scheduleTitle = new HashMap<>();
-		// keyの値　１個目scheduleID　２個目何行目　valuesの値　予定の内容
-		private Map<Integer, Map<Integer, String>> scheduleText = new HashMap<>();
-		public void clearScheduleTexts(int time) {
-			scheduleText.get(time).clear();
+	//　予定のID
+	private int scheduleID;
+	public int getScheduleID() {
+		return scheduleID;
+	}
+	public void setScheduleID(int scheduleID) {
+		this.scheduleID = scheduleID;
+	}
+	// 日付
+	private String scheduleStartDate;
+	public String getScheduleStartDate() {
+		return scheduleStartDate;
+	}
+	public void setScheduleStartDate(String scheduleDate) {
+		this.scheduleStartDate = scheduleDate;
+	}
+	private String scheduleEndDate;
+	public String getScheduleEndDate() {
+		return scheduleEndDate;
+	}
+	public void setScheduleEndDate(String scheduleDate) {
+		this.scheduleEndDate = scheduleDate;
+	}
+	//　時刻
+	private String scheduleStartTime;
+	public String getScheduleStartTime() {
+		return scheduleStartTime;
+	}
+	public void setScheduleStartTime(String scheduleTime) {
+		this.scheduleStartTime = scheduleTime;
+	}
+	private String scheduleEndTime;
+	public String getScheduleEndTime() {
+		return scheduleEndTime;
+	}
+	public void setScheduleEndTime(String scheduleTime) {
+		this.scheduleEndTime = scheduleTime;
+	}
+	//　予定のタイトル
+	private String scheduleTitle;
+	public String getScheduleTitle() {
+		return scheduleTitle;
+	}
+	public void setScheduleTitle(String scheduleTitle) {
+		this.scheduleTitle = scheduleTitle;
+	}
+	// 予定の内容
+	private ArrayList<String> scheduleText = new ArrayList<>();
+	public void clearScheduleTexts() {
+		scheduleText.clear();
+	}
+	public int scheduleTextsCount() {
+		return scheduleText.size();
+	}
+	public void setScheduleText(String Texts) {
+		scheduleText.add(Texts);
+	}
+	
+	public void setSchedule(int id, String startDate, String startTime, String endDate, String endTime, String title, ArrayList<String> text) {
+		
+	}
+	/* 保留
+	// 予定を繰り返す
+	private int loopflg;
+	private int loopday;
+	private int loopmonth;
+	private int loopweek;
+	final public String LOOPTEXT[] = { "しない" , "毎日" , "毎週" , "毎月" , "毎年" };
+	public Boolean setloopflg(int flg) {
+		if(0 <= flg && flg < LOOPTEXT.length) {
+			loopflg = flg;
+			return true;
 		}
-		public int scheduleTextsCount(int time, int day) {
-			return scheduleID.get(time).get(day).size();
-		}
-		public void setScheduleText(int ID, Map<Integer, String> Texts) {
-			scheduleText.get(ID).putAll(Texts);
-		}
+		return false;
+	}*/
+	
 
 }

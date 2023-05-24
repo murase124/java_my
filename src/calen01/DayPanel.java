@@ -14,25 +14,25 @@ public class DayPanel {
 	public final String WEEKTEXT[] = new String[] {"日","月","火","水","木","金","土"};
 	
 	private final int DAYBUTTONMAX = 42;
-	private ArrayList<JButton> dayButton = new ArrayList<>();
-	public ArrayList<JButton> getDayButton() {
-		return dayButton;
+	private ArrayList<DayList> dayList = new ArrayList<>();
+	public ArrayList<DayList> getDayList() {
+		return dayList;
 	}
-	public JButton getDayButton(int key) {
-		return dayButton.get(key);
-	}
-	public JButton setDayButton(int key, String values) {
-		getDayButton(key).setText(values);
-		return dayButton.get(key);
-	}
-	private JButton setDayButton(JButton values) {
-		dayButton.add(values);
+	private JButton setDayListButton(JButton values) {
+		dayList.add(new DayList(values));
 		return values;
 	}
-	public void setDayButton(ArrayList<Integer> TimeDay) {
-		for(int i=0;i < DAYBUTTONMAX;i++) setDayButton(i, String.valueOf(TimeDay.get(i)));
+	
+	public void setDayListDate(int key, int year, int month, int day, String text) {
+		if(0 <= key && key < DAYBUTTONMAX) {
+			dayList.get(key).setDate(year, month, day, text);			
+		}
 	}
-
+	
+	private ArrayList<Schedule> schedule = new ArrayList<>();
+	public ArrayList<Schedule> getSchedule() {
+		return schedule;
+	}
 		
 	private JPanel dayPanel;//各日のJButtonを表示
 	public JPanel getDayPanel() {
@@ -44,7 +44,7 @@ public class DayPanel {
 		dayPanel.setLayout(new GridLayout(6, 7, 2, 3));
 
 		for(int i=0;i < DAYBUTTONMAX;i++) {
-			JButton jbutton = setDayButton(new JButton());
+			JButton jbutton = setDayListButton(new JButton());
 			//フォント 
 			jbutton.setFont(new Font(Font.DIALOG_INPUT, Font.PLAIN, 20));
 			jbutton.setPreferredSize(new Dimension(40, 20));
@@ -53,8 +53,5 @@ public class DayPanel {
 			//パネルにボタンを追加
 			dayPanel.add(jbutton);
 		}
-
 	}
-	
-	
 }

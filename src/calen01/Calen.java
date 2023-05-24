@@ -1,6 +1,7 @@
 package calen01;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -8,7 +9,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.util.Calendar;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -17,23 +17,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 public class Calen extends JFrame {
 	
-	
-	Calendar calendar;
-
-	private JPanel weekPanel;
-	private JPanel calenPanel;
-	private JPanel titlePanel;
-	private JPanel schedule;
-	private JTextArea scheduleList;
 	private JButton nextButton;
 	private JLabel nowLabel;
 	private JButton backButton;
-	private DayList dayList;
+	private Day dayGet;
 	private DayPanel dayPanel;
 	
 	public static void main(String[] args) {
@@ -43,16 +34,15 @@ public class Calen extends JFrame {
 	}
 	
 	public Calen() {
-		dayList = new DayList();
-		dayPanel = new DayPanel();
-		dayPanel.setDayButton(dayList.getTimeDay());
+		dayGet = new Day();
+		dayPanel = dayGet.getDayPanel();
 		//タイトルパネル
-		titlePanel = new JPanel();
-		nextButton = new JButton(dayList.getNextMonth() + "月");
-		nowLabel =  new JLabel(dayList.getYear() + "年" + dayList.getMonth() + "月");
-		backButton =  new JButton(dayList.getBoackMonth() + "月");
-		nextButton.addActionListener( e -> { dayList.nextMonth(); updateMonth(); });
-		backButton.addActionListener( e -> { dayList.backMonth(); updateMonth(); });
+		JPanel titlePanel = new JPanel();
+		nextButton = new JButton(dayGet.getNextMonth() + "月");
+		nowLabel =  new JLabel(dayGet.getYear() + "年" + dayGet.getMonth() + "月");
+		backButton =  new JButton(dayGet.getBackMonth() + "月");
+		nextButton.addActionListener( e -> { dayGet.nextMonth(); updateMonth(); });
+		backButton.addActionListener( e -> { dayGet.backMonth(); updateMonth(); });
 		//レインアウト
 		GridBagLayout layout = new GridBagLayout();
 	    GridBagConstraints gbc = new GridBagConstraints();
@@ -82,7 +72,7 @@ public class Calen extends JFrame {
 		titlePanel.add(nextButton);
 		
 		//日付パネル
-		weekPanel = new JPanel();
+		JPanel weekPanel = new JPanel();
 		weekPanel.setLayout(new GridLayout(1, 7, 2, 2));
 		for(int i=0;i < dayPanel.WEEKTEXT.length;i++) {
 			JLabel label = new JLabel(dayPanel.WEEKTEXT[i]);
@@ -93,30 +83,41 @@ public class Calen extends JFrame {
 			weekPanel.add(label);
 		}
 		
-		calenPanel = new JPanel();
+		JPanel calenPanel = new JPanel();
 		calenPanel.setLayout(new BoxLayout(calenPanel , BoxLayout.Y_AXIS));
 		calenPanel.add(weekPanel);
 		calenPanel.add(dayPanel.getDayPanel());
 		
-		//操作パネル
-		schedule = new JPanel();
-		JPanel addSchedulea = new JPanel();
-		JTextField input = new JTextField();
-		JButton addtext = new JButton("登録");
-		scheduleList = new JTextArea();
+		//予定パネル
+		JPanel schedule = new JPanel();
+		JPanel operation = new JPanel();
+		JButton listSchedule = new JButton("リスト");
+		JButton addSchedule = new JButton("登録");
+		JButton changeSchedule = new JButton("編集");
+		JButton deleteSchedule = new JButton("削除");
+		CardLayout cardlayout = new CardLayout();
+		JPanel switching = new JPanel();
+		
+		JTextArea scheduleList = new JTextArea();
 		scheduleList.setPreferredSize(new Dimension(500, 150));
-		addSchedulea.setLayout(new BoxLayout(addSchedulea , BoxLayout.X_AXIS));
-		addSchedulea.add(Box.createRigidArea(new Dimension(10,10)));
-		addSchedulea.add(input);
-		addSchedulea.add(Box.createRigidArea(new Dimension(10,10)));
-		addSchedulea.add(addtext);	
-		addSchedulea.add(Box.createRigidArea(new Dimension(10,10)));
+		operation.setLayout(new BoxLayout(operation , BoxLayout.X_AXIS));
+		operation.add(listSchedule);	
+		operation.add(Box.createRigidArea(new Dimension(10,10)));
+		operation.add(addSchedule);	
+		operation.add(Box.createRigidArea(new Dimension(10,10)));
+		operation.add(changeSchedule);	
+		operation.add(Box.createRigidArea(new Dimension(10,10)));
+		operation.add(deleteSchedule);	
+
+		switching.setLayout(cardlayout);
+		switching.add(scheduleList, "scheduleList");
+
 		schedule.setLayout(new BoxLayout(schedule , BoxLayout.Y_AXIS));
 		schedule.add(Box.createRigidArea(new Dimension(500,20)));
-		schedule.add(addSchedulea);
+		schedule.add(operation);
 		schedule.add(Box.createRigidArea(new Dimension(500,10)));
-		schedule.add(scheduleList);
-		
+		schedule.add(switching);
+
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		getContentPane().add(BorderLayout.NORTH, titlePanel);
 		getContentPane().add(BorderLayout.CENTER, calenPanel);
@@ -124,10 +125,9 @@ public class Calen extends JFrame {
 	}
 	
 	public void updateMonth() {
-		nextButton.setText(dayList.getNextMonth() + "月");
-		nowLabel.setText(dayList.getYear() + "年" + dayList.getMonth() + "月");
-		backButton.setText(dayList.getBoackMonth() + "月");
-		dayPanel.setDayButton(dayList.getTimeDay());
+		nextButton.setText(dayGet.getNextMonth() + "月");
+		nowLabel.setText(dayGet.getYear() + "年" + dayGet.getMonth() + "月");
+		backButton.setText(dayGet.getBackMonth() + "月");
 	}
 }
 
