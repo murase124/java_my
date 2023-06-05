@@ -1,11 +1,10 @@
 package calen01;
 
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Day {
-	private final int DAYBUTTONMAX = 42;
-
 	private DayPanel dayPanel;
 	public DayPanel getDayPanel() {
 		return dayPanel;
@@ -75,9 +74,13 @@ public class Day {
 		timeDay.add(key, values);
 	}
 	private void setDatlist(int key, int year, int month, int day) {
-		dayPanel.setDayListDate(key, year, month, day, String.valueOf(day));
+		getDayPanel().setDayListDate(key, year, month, day, String.valueOf(day));
 	}
 	
+	
+	public void dayButtonAddActionListener(ActionListener e) {
+		getDayPanel().dayButtonAddActionListener(e);
+	}
 	/* 
 	 * createDay
 	 * Calendar型変数作成
@@ -132,7 +135,7 @@ public class Day {
 			updateKey++;
 		}
 		//余りを来月で穴埋め
-		for(int i =1; updateKey < DAYBUTTONMAX;i++) {
+		for(int i =1; updateKey < dayPanel.DAYBUTTONMAX;i++) {
 			setTimeDay(updateKey, i);
 			setDatlist(updateKey, getNextYear(), getNextMonth(), i);
 			updateKey++;

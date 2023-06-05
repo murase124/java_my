@@ -52,6 +52,7 @@ public class DayList {
 		setDayButton(text);
 	}	
 	
+	
 	DayList(JButton values){
 		this.dayButton = values;
 	}

@@ -19,19 +19,24 @@ public class DB {
 		return "INSERT INTO TEST_TABLE VALUES (2, 'FUGA')";
 	}
 	public String[] getConnectionText() {
-		return new String[]{"jdbc:mysql://localhost/schedule","javatest",""};
+		return new String[]{"jdbc:hsqldb:file:calen/schedule;shutdown=true", "javatest",""};
 	}
 	public String getDriverText() {
 		return "Com.mysql.cj.jdbc.Driver";
 	}
-	public void Log(String sql, String[] replace) {
+	public static void Log(String sql, String[] replace) {
 		String sql2 =  sql;
 		if(replace != null) {
 			for(int i=0;i < replace.length;i++)	{
 				sql2 = sql.replaceFirst("?", replace[i]);
 			}
 		}
-		new TextDBLog("db/schedule.txt", new String[] {sql2+"\r\n"});
+		new TextDBLog("calen/schedule.txt", new String[] {sql2+"\r\n"});
+		
+	}
+	public static void Log(String sql) {
+		String sql2 =  sql;
+		new TextDBLog("calen/schedule.txt", new String[] {sql2+"\r\n"});
 		
 	}
 	
@@ -48,8 +53,9 @@ public class DB {
     			+ ", FOREIGN KEY(scheduleID) REFERENCES schedule(id)"
     			+ ", FOREIGN KEY(unitID) REFERENCES repetitionUnit(repetitionUnitID)"
     			+ ", PRIMARY KEY(repetitionID, scheduleID))";
+    	//sql = "DESC repetition";
+
     	db.createTable(sql);
-    	
     	System.out.println(sql);
     }
 	
@@ -61,6 +67,7 @@ public class DB {
 			return  true;
 		} catch (SQLException e) {
 			System.out.println("Mysql への接続に失敗しました。");
+			System.out.println(e);
 			return false;
 		}
 	}
@@ -83,7 +90,23 @@ public class DB {
 		try {
 			st = connection.createStatement();
 			st.executeUpdate(sql);
-			Log(sql, null);
+			Log(sql);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+    }
+	public Boolean execute(String sql)  {
+        // データベースに接続
+		if(!connection()) {return false;}
+        // テーブル作成
+        Statement st;
+		try {
+			st = connection.createStatement();
+			st.execute(sql);
+			Log(sql);
 
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -1,6 +1,7 @@
 package calen01;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Schedule {
 
@@ -13,6 +14,20 @@ public class Schedule {
 		this.scheduleID = scheduleID;
 	}
 	// 日付
+	private Date startDate = new Date();
+	public Date getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(Date date) {
+		this.startDate = date;
+	}
+	private Date endDate = new Date();
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date date) {
+		this.endDate = date;
+	}
 	private String scheduleStartDate;
 	public String getScheduleStartDate() {
 		return scheduleStartDate;
@@ -58,12 +73,21 @@ public class Schedule {
 	public int scheduleTextsCount() {
 		return scheduleText.size();
 	}
-	public void setScheduleText(String Texts) {
-		scheduleText.add(Texts);
+	public void setScheduleText(String texts) {
+		scheduleText.add(texts);
+	}
+	public void setScheduleText(ArrayList<String> texts) {
+		scheduleText = texts;
 	}
 	
 	public void setSchedule(int id, String startDate, String startTime, String endDate, String endTime, String title, ArrayList<String> text) {
-		
+		setScheduleID(id);
+		setScheduleStartDate(startDate);
+		setScheduleStartTime(startTime);
+		setScheduleEndDate(endDate);
+		setScheduleEndTime(endTime);
+		setScheduleTitle(title);
+		setScheduleText(text);
 	}
 	/* 保留
 	// 予定を繰り返す
