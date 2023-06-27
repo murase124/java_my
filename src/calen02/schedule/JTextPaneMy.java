@@ -1,4 +1,4 @@
-package calen01;
+package calen02.schedule;
 
 import java.awt.Dimension;
 
@@ -21,5 +21,13 @@ public class JTextPaneMy extends JTextPane{
 			}
 		}
 		return false;
+	}
+	
+	public  void append(String text) {
+		super.setText(this.getText() + text);
+	}
+	
+	public  void clearText() {
+		super.setText("");
 	}
 }

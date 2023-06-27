@@ -1,6 +1,7 @@
-package calen01;
+package calen02.schedule;
 
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -16,27 +17,43 @@ public class SwitchingPane {
 	}
 	
 	private ArrayList<String> name = new ArrayList<>();
-	private ArrayList<JPanel> panles = new ArrayList<>();
+	private ArrayList<JPanel> panels = new ArrayList<>();
 	private ArrayList<JButton> buttons = new ArrayList<>();
 
 	public ArrayList<String> getName() {
 		return name;
 	}	
-	public ArrayList<JPanel> getPanles() {
-		return panles;
+	public String getName(int num) {
+		return name.get(num);
+	}	
+	public ArrayList<JPanel> getPanels() {
+		return panels;
+	}
+	public JPanel getPanels(int num) {
+		return panels.get(num);
+	}
+	public void addPanels(int num, Component pane) {
+		panels.get(num).add(pane);
 	}
 	public ArrayList<JButton> getButtons() {
 		return buttons;
 	}
+	public JButton getButtons(int num) {
+		return buttons.get(num);
+	}
+	public void setButtonText(int num, String text) {
+		buttons.get(num).setText(text);;
+	}
 	
-	public int add(JPanel panel, String name) {
+	public int addCreatePane(String name, String text) {
 		JButton button = new JButton();
-
+		JPanel panel = new JPanel();
 		this.name.add(name);
-		this.panles.add(panel);
+		this.panels.add(panel);
 		this.switchingPane.add(panel, name);
 		this.buttons.add(button);
-		button.addActionListener( e -> { this.cardlayout.show(switchingPane, name); });
+		button.addActionListener( e -> { this.cardlayout.show(this.switchingPane, name); });
+		button.setText(text);;
 		return this.name.size()-1;
 	}
 	

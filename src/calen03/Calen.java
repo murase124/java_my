@@ -1,13 +1,12 @@
-package calen01;
+package calen03;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.time.LocalDateTime;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,13 +14,24 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import calen03.schedule.SchedulePane;
+
+
 public class Calen extends JFrame {
 	
 	private JButton nextButton;
 	private JLabel nowLabel;
 	private JButton backButton;
-	private Day dayGet;
-	private DayPanel dayPanel;
+	private DayPanel dayGet;
+	private SchedulePane schedulePane;
+	private LocalDateTime dateTime;
+	private LocalDateTime plusMonths() {
+		return dateTime.plusMonths(1);
+	}
+	private LocalDateTime minusMonths() {
+		return dateTime.minusMonths(1);
+	}
+	
 	
 	public static void main(String[] args) {
 		Calen calen = new Calen();
@@ -30,16 +40,18 @@ public class Calen extends JFrame {
 	}
 	
 	public Calen() {
-		dayGet = new Day();
-		dayPanel = dayGet.getDayPanel();
+		dateTime = LocalDateTime.of(LocalDateTime.now().getYear(),LocalDateTime.now().getMonth(),1,0,0);
+
+		dayGet = new DayPanel(dateTime);
 	
 		//タイトルパネル
 		JPanel titlePanel = new JPanel();
-		nowLabel =  new JLabel(dayGet.getYear() + "年" + dayGet.getMonth() + "月");
-		nextButton = new JButton(dayGet.getNextMonth() + "月");
-		backButton =  new JButton(dayGet.getBackMonth() + "月");
-		nextButton.addActionListener( e -> { dayGet.nextMonth(); updateMonth(); });
-		backButton.addActionListener( e -> { dayGet.backMonth(); updateMonth(); });
+		nowLabel =  new JLabel();
+		nextButton = new JButton();
+		backButton =  new JButton();
+		updateMonth();
+		nextButton.addActionListener( e -> { nextMonthUpdate(); });
+		backButton.addActionListener( e -> { backMonthUpdate(); });
 		//レインアウト
 		GridBagLayout layout = new GridBagLayout();
 	    GridBagConstraints gbc = new GridBagConstraints();
@@ -68,35 +80,19 @@ public class Calen extends JFrame {
 		//日付パネル
 		JPanel calenPanel = new JPanel();
 		calenPanel.setLayout(new BoxLayout(calenPanel , BoxLayout.Y_AXIS));
-		calenPanel.add(dayPanel.getWeekPane());//曜日ラベル
-		calenPanel.add(dayPanel.getDayPanel());//日付ボタン
+		calenPanel.add(dayGet.getWeekPane());//曜日ラベル
+		calenPanel.add(dayGet.getDayPanel());//日付ボタン
 		
 		//予定パネル
-		JPanel schedulePane = new JPanel();
-		SchedulePanel switchingPanel = new SchedulePanel();
-		
-		schedulePane.setLayout(new BoxLayout(schedulePane , BoxLayout.Y_AXIS));
-		schedulePane.add(Box.createRigidArea(new Dimension(500,20)));
-		schedulePane.add(switchingPanel.getOperationPane());
-		schedulePane.add(Box.createRigidArea(new Dimension(500,10)));
-		schedulePane.add(switchingPanel.getSwitchingPane());
-		switchingPanel.createListPanel();
-		switchingPanel.createAddPane();
-		switchingPanel.createEditPane();
-		
+		schedulePane = new SchedulePane(dateTime);
+	
 		//日付ボタン　クリック　ー＞　日付渡す
-		for(int i=0; i < dayPanel.DAYBUTTONMAX; i++) {
+		for(int i=0; i < dayGet.DAYBUTTONMAX; i++) {
 			int id = i;
-			dayPanel.getDayList(i).getDayButton().addActionListener(e -> {
-				int year = dayPanel.getDayList(id).getYear();
-				int month = dayPanel.getDayList(id).getMonth();
-				int day = dayPanel.getDayList(id).getDay();
-				switchingPanel.setList(year + "/" + month + "/" + day);
-				
+			dayGet.getDayList(i).addActionListener(e -> {
+				schedulePane.dayButtonAction(dayGet.getDayList(id).getDate().atStartOfDay());
 			});
 		}
-		
-
 		
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		getContentPane().add(BorderLayout.NORTH, titlePanel);
@@ -105,9 +101,21 @@ public class Calen extends JFrame {
 	}
 	
 	public void updateMonth() {
-		nextButton.setText(dayGet.getNextMonth() + "月");
-		nowLabel.setText(dayGet.getYear() + "年" + dayGet.getMonth() + "月");
-		backButton.setText(dayGet.getBackMonth() + "月");
+		nextButton.setText(plusMonths().getMonthValue() + "月");
+		nowLabel.setText(dateTime.getYear() + "年" + dateTime.getMonthValue() + "月");
+		backButton.setText(minusMonths().getMonthValue() + "月");
+	}
+	public void backMonthUpdate() {
+		dateTime = minusMonths();
+		dayGet.updetaDayButton(dateTime);;
+		schedulePane.backSchedule(dateTime);
+		updateMonth();
+	}
+	public void nextMonthUpdate() {
+		dateTime = plusMonths();
+		dayGet.updetaDayButton(dateTime);;
+		schedulePane.nextSchedule(dateTime);
+		updateMonth();
 	}
 }
 
