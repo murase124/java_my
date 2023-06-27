@@ -1,0 +1,15 @@
+INSERT INTO a (id,name) VALUES (5,'ki')
+SELECT * FROM schedules
+SELECT * FROM schedules
+SELECT * FROM schedules
+SELECT * FROM schedules
+SELECT * FROM schedules
+SELECT * FROM schedules
+SELECT * FROM schedules
+SELECT * FROM schedules
+SELECT * FROM schedules
+SELECT * FROM schedules
+SELECT * FROM schedules
+SELECT * FROM schedules
+SELECT * FROM schedules
+SELECT * FROM schedules
