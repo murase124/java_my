@@ -1,4 +1,4 @@
-package calen04.ScheduleDTO;
+package calen05.ScheduleDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import calen04.DAO.DB;
+import calen05.DAO.DB;
 
 public class Schedules {
 	/* スケジュール */
+	//日付
+	LocalDateTime date;
+	
 	//選択日のスケジュール
 	private List<Schedule> daySchedule;
 	public List<Schedule> getDaySchedule(LocalDateTime start) {
@@ -36,13 +39,33 @@ public class Schedules {
         this.schedule = Stream.concat(backSchedule.stream(), tmp.stream()).collect(Collectors.toList());
 	}
 	//スケジュールをデータベースから取得する
-	private void setSchedule(ArrayList<Schedule> schedule, LocalDateTime date) {
+	public final int NEXTUPDETE = 0;
+	public final int NOWUPDETE = 1;
+	public final int BACKUPDETE = 2;
+	public void updateSchedule(int num) {
+		switch (num) {
+			case NEXTUPDETE: {
+				updateSchedule(nextSchedule, date.plusMonths(1));
+				break;
+			}
+			case NOWUPDETE: {
+				updateSchedule(mowSchedule, date);
+				break;
+			}
+			case BACKUPDETE: {
+				updateSchedule(backSchedule, date.minusMonths(1));
+				break;
+			}
+		}
+	}
+	private void updateSchedule(ArrayList<Schedule> schedule, LocalDateTime date) {
 		DB db = new DB();
 		ResultSet rs = (db.getSchedule(date ,date.plusMonths(1)));
 		try {
 			while(rs.next()) {
-				System.out.println(rs.getInt(1) + "," + rs.getTimestamp(2).toLocalDateTime() + "," + rs.getTimestamp(3).toLocalDateTime() + "," + rs.getTimestamp(4).toLocalDateTime() + "," +  rs.getString(5) + "," + rs.getString(6) + "," + rs.getString(7));
-				schedule.add(new Schedule(rs.getInt(1), rs.getTimestamp(2).toLocalDateTime(),  rs.getTimestamp(3).toLocalDateTime(), rs.getString(5),  rs.getString(6)));
+				//デバック
+				System.out.println(rs.getInt(db.ResultSet_ID) + "," + rs.getTimestamp(db.ResultSet_STARTTIMESTAMP).toLocalDateTime() + "," + rs.getTimestamp(db.ResultSet_ENDTIMESTAMP).toLocalDateTime() + "," + rs.getTimestamp(db.ResultSet_CREATETIMESTAMP).toLocalDateTime() + "," +  rs.getString(db.ResultSet_TITLE) + "," + rs.getString(db.ResultSet_TEXTS) + "," + rs.getString(db.ResultSet_DELETFLG));
+				schedule.add(new Schedule(rs.getInt(db.ResultSet_ID), rs.getTimestamp(db.ResultSet_STARTTIMESTAMP).toLocalDateTime(),  rs.getTimestamp(db.ResultSet_ENDTIMESTAMP).toLocalDateTime(), rs.getString(db.ResultSet_TITLE),  rs.getString(db.ResultSet_TEXTS)));
 			}
 		} catch (SQLException e) {
 			// TODO 自動生成された catch ブロック
@@ -51,27 +74,30 @@ public class Schedules {
 	}
 	//表示月を１月分来月へ
 	@SuppressWarnings("unchecked")
-	public void nextSchedule(LocalDateTime date) {
+	public void nextSchedule() {
+		this.date = this.date.plusMonths(1);
 		backSchedule =  (ArrayList<Schedule>) mowSchedule.clone();
 		mowSchedule =  (ArrayList<Schedule>) nextSchedule.clone();
 		nextSchedule.clear();
-		setSchedule(nextSchedule, date.plusMonths(1));
+		updateSchedule(NEXTUPDETE);
 		setSchedule();
 	}
 	//表示月を１月分前月へ
 	@SuppressWarnings("unchecked")
-	public void backSchedule(LocalDateTime date) {
+	public void backSchedule() {
+		this.date = this.date.minusMonths(1);
 		nextSchedule = (ArrayList<Schedule>) mowSchedule.clone();
 		mowSchedule = (ArrayList<Schedule>)  backSchedule.clone();
 		backSchedule.clear();
-		setSchedule(backSchedule, date.minusMonths(1));
+		updateSchedule(BACKUPDETE);
 		setSchedule();
     }
 	//表示する3か月分のスケジュール
 	public Schedules(LocalDateTime date) {
-		setSchedule(nextSchedule, date.plusMonths(1));
-		setSchedule(mowSchedule, date);
-		setSchedule(backSchedule, date.minusMonths(1));
+		this.date = date;
+		updateSchedule(NEXTUPDETE);
+		updateSchedule(NOWUPDETE);
+		updateSchedule(BACKUPDETE);
 		setSchedule();
 	}
 }

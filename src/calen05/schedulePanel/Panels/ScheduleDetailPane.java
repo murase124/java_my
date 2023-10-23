@@ -1,31 +1,31 @@
-package calen04.schedulePanel.Panels;
+package calen05.schedulePanel.Panels;
 
 import java.awt.Dimension;
-import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import calen04.ScheduleDTO.Schedule;
-import calen04.schedulePanel.CardlayoutActionListener;
+import calen05.ScheduleDTO.Schedule;
+import calen05.schedulePanel.OperationPanel;
 
 public abstract class ScheduleDetailPane extends JPanel {
-	
+	private OperationPanel operationPanel;
+	public OperationPanel getOperationPanel() {
+		return operationPanel;
+	}
+	public void setOperationPanel(OperationPanel switchingPanel) {
+		this.operationPanel = switchingPanel;
+	}
+
 	private DetailItem item = new DetailItem();
 	public DetailItem getItem() {
 		return item;
 	}
 
-	public JButton switchingButton(String text, ActionListener actionListener) {
-		JButton jbutton = new JButton(text);
-		if(actionListener != null) jbutton.addActionListener(actionListener);
-		return jbutton;
-	}
 	
 	public void setSchedule(Schedule schedule) {
 		item.setStartDate(schedule.getStartDateTime());
@@ -109,6 +109,6 @@ public abstract class ScheduleDetailPane extends JPanel {
 		return jpenel;
 	}
 	
-	abstract public JPanel createSwitchMovePane(ArrayList<CardlayoutActionListener> actionListeners);
+	abstract public JPanel createSwitchMovePane();
 
 }

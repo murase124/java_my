@@ -1,4 +1,4 @@
-package calen04.ScheduleDTO;
+package calen05.ScheduleDTO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

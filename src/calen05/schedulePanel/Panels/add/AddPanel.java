@@ -1,43 +1,47 @@
-package calen04.schedulePanel.Panels.add;
+package calen05.schedulePanel.Panels.add;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import calen04.schedulePanel.CardlayoutActionListener;
-import calen04.schedulePanel.Panels.ScheduleDetailPane;
+import calen05.schedulePanel.OperationPanel;
+import calen05.schedulePanel.Panels.ScheduleDetailPane;
 
 public class AddPanel extends ScheduleDetailPane {
 	
-	public AddPanel(ArrayList<CardlayoutActionListener> actionListeners) {
+	public AddPanel(OperationPanel operationPanel) {
+		setOperationPanel(operationPanel);
 		setLayout(new BorderLayout());
 
-		add(createSwitchMovePane(actionListeners), BorderLayout.NORTH);
+		add(createSwitchMovePane(), BorderLayout.NORTH);
 		add(createDisplayPane(), BorderLayout.CENTER);
 	}
 	
 	/* パネル切り替えボタン作成用 */
 	@Override
-	public JPanel createSwitchMovePane(ArrayList<CardlayoutActionListener> actionListeners) {
+	public JPanel createSwitchMovePane() {
 		JPanel jpanel = new JPanel();
-		jpanel.add(switchingButton("一覧",
+		JButton listButton = new JButton(getOperationPanel().getPanelNameJP(getOperationPanel().LISTPANEL));
+		listButton.addActionListener(
 			new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					int let = 1;
 					let = JOptionPane.showConfirmDialog(null, "保存しないでよろしいですか？", "警告", JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE);
 					if(let == JOptionPane.YES_OPTION) {
-						actionListeners.get(0).run();
+						getOperationPanel().getActionListener(getOperationPanel().LISTPANEL).run();
 					}
 				}
 			}
-		));
-		jpanel.add(switchingButton("登録", null));
+		);
+		jpanel.add(listButton);
+		JButton addButton = new JButton("登録");
+
+		jpanel.add(addButton);
 		return jpanel;
 	}
-
 }

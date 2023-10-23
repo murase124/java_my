@@ -1,7 +1,6 @@
-package calen04;
+package calen05;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,6 +8,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -17,22 +17,22 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import calen04.DayButtonDTO.DayButton;
-import calen04.DayButtonDTO.DayButtons;
-import calen04.DayPanel.DayPanel;
-import calen04.ScheduleDTO.Schedules;
-import calen04.schedulePanel.ScheduleProcess;
-import calen04.schedulePanel.SwitchingPanel;
-import calen04.schedulePanel.Panels.Detail.DetailPanel;
-import calen04.schedulePanel.Panels.Edit.EditPanel;
-import calen04.schedulePanel.Panels.List.ListPanel;
-import calen04.schedulePanel.Panels.add.AddPanel;
+import calen05.DayButtonDTO.DayButton;
+import calen05.DayButtonDTO.DayButtons;
+import calen05.DayPanel.DayPanel;
+import calen05.ScheduleDTO.Schedule;
+import calen05.ScheduleDTO.Schedules;
+import calen05.schedulePanel.OperationPanel;
+import calen05.schedulePanel.Panels.Detail.DetailPanel;
+import calen05.schedulePanel.Panels.List.ListPanel;
+import calen05.schedulePanel.Panels.add.AddPanel;
 
 
 public class Calen extends JFrame {
 	
 	public final String[] SWITCHINGPANELNAME = { "list" , "add"  , "detail" , "edit" };
-	private SwitchingPanel scheduleSwitchingPane;
+	public final String[] SWITCHINGPANELNAMEJP = { "一覧" , "追加"  , "詳細" , "編集" };
+	private OperationPanel operationPanel;
 	
 	public final int DAYBUTTONMAX = 42;
 	private DayButtons dayLists;
@@ -44,13 +44,6 @@ public class Calen extends JFrame {
 	private DayPanel dayPanel;
 
 	private LocalDateTime dateTime;
-	private LocalDateTime plusMonths() {
-		return dateTime.plusMonths(1);
-	}
-	private LocalDateTime minusMonths() {
-		return dateTime.minusMonths(1);
-	}
-	
 	
 	public static void main(String[] args) {
 		Calen calen = new Calen();
@@ -63,7 +56,7 @@ public class Calen extends JFrame {
 
 		dayPanel = new DayPanel();
 		schedules = new Schedules(dateTime);
-		dayLists = new DayButtons(DAYBUTTONMAX);
+		dayLists = new DayButtons(DAYBUTTONMAX, dateTime);
 		
 		//タイトルパネル
 		JPanel titlePanel = new JPanel();
@@ -104,72 +97,78 @@ public class Calen extends JFrame {
 		calenPanel.add(dayPanel.createWeekPane());//曜日ラベル
 		calenPanel.add(dayPanel.createDayPanel(dayLists));//日付ボタン
 		
-		//予定パネル
-		scheduleSwitchingPane = new SwitchingPanel();
-		for(int i =0; i < SWITCHINGPANELNAME.length;i++) {
-			scheduleSwitchingPane.createPane(SWITCHINGPANELNAME[i]);
-			scheduleSwitchingPane.getPanels(i).setPreferredSize(new Dimension(470, 220));
-			scheduleSwitchingPane.getPanels(i).setLayout(new BorderLayout());
-		}
+		//予定表示パネル
+		operationPanel = new OperationPanel();
+		
 		/* switchingPanels */
 		//概要
-		ListPanel listPanel = new ListPanel(scheduleSwitchingPane.getActionListener());
-		scheduleSwitchingPane.addPanels(0, listPanel);
+		ListPanel listPanel = new ListPanel(operationPanel);
+		operationPanel.addPanels(operationPanel.LISTPANEL, listPanel);
 		//追加
-		AddPanel addPane = new AddPanel(scheduleSwitchingPane.getActionListener());
-		scheduleSwitchingPane.addPanels(1, addPane);
+		AddPanel addPane = new AddPanel(operationPanel);
+		operationPanel.addPanels(operationPanel.ADDPANEL, addPane);
 		//詳細
-		DetailPanel detailPane = new DetailPanel(scheduleSwitchingPane.getActionListener());
-		scheduleSwitchingPane.addPanels(2, detailPane);
-		//編集
-		EditPanel editPane = new EditPanel(scheduleSwitchingPane.getActionListener());
-		scheduleSwitchingPane.addPanels(3, editPane);
+		DetailPanel detailPane = new DetailPanel(operationPanel);
+		operationPanel.addPanels(operationPanel.DETAILPANEL, detailPane);
+		
 		
 		//日付ボタン　クリック　ー＞　日付渡す
 		for(int i=0; i < DAYBUTTONMAX; i++) {
-			dayLists.getDayButtons(i).addActionListener(new dayButtonActionListener(new ScheduleProcess(scheduleSwitchingPane), listPanel, schedules));
+			dayLists.getDayButtons(i).addActionListener(new dayButtonActionListener(schedules, operationPanel));
 		}
 		
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		getContentPane().add(BorderLayout.NORTH, titlePanel);
 		getContentPane().add(BorderLayout.CENTER, calenPanel);
-		getContentPane().add(BorderLayout.SOUTH, scheduleSwitchingPane);
-		
-		
+		getContentPane().add(BorderLayout.SOUTH, operationPanel);
 	}
 	
 	public void updateMonth() {
-		nextButton.setText(plusMonths().getMonthValue() + "月");
+		nextButton.setText(dateTime.plusMonths(1).getMonthValue() + "月");
 		nowLabel.setText(dateTime.getYear() + "年" + dateTime.getMonthValue() + "月");
-		backButton.setText(minusMonths().getMonthValue() + "月");
-		dayLists.updetaDayButton(dateTime);;
+		backButton.setText(dateTime.minusMonths(1).getMonthValue() + "月");
 	}
 	public void backMonthUpdate() {
-		dateTime = minusMonths();
+		dateTime = dateTime.minusMonths(1);
 		updateMonth();
-		schedules.backSchedule(dateTime);
+		schedules.backSchedule();
+		dayLists.backMonths();
 	}
 	public void nextMonthUpdate() {
-		dateTime = plusMonths();
+		dateTime = dateTime.plusMonths(1);
 		updateMonth();
-		schedules.nextSchedule(dateTime);
+		schedules.nextSchedule();
+		dayLists.nextMonths();
 	}
 	
 	class dayButtonActionListener implements ActionListener{
-		private ScheduleProcess schedulePane;
 		private Schedules schedules;
+		private OperationPanel operationPanel;
 		private ListPanel listPanel;
+		private AddPanel addPanel;
+		private DetailPanel detailPanel;
+
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			DayButton dayButton = (DayButton) e.getSource();
-			this.schedulePane.dayButtonAction(listPanel, dayButton.getDateTime(), this.schedules);
+			List<Schedule> daySchedule = schedules.getDaySchedule(dayButton.getDateTime());
+			if(operationPanel.getComponent(0).isVisible() == true){
+				listPanel.updateSchedule(daySchedule);
+			}else if(operationPanel.getComponent(1).isVisible() == true){
+			
+			}
+			
+			
+			System.out.println(operationPanel.getPanelsComponent(operationPanel.LISTPANEL));
 		}
 		
-		public dayButtonActionListener(ScheduleProcess schedulePane, ListPanel listPanel, Schedules schedules) {
-			this.schedulePane = schedulePane;
-			this.listPanel = listPanel;
+		public dayButtonActionListener(Schedules schedules, OperationPanel operationPanel) {
 			this.schedules = schedules;
+			this.operationPanel = operationPanel;
+			this.listPanel = (ListPanel) operationPanel.getPanelsComponent(operationPanel.LISTPANEL);
+			this.addPanel = (AddPanel) operationPanel.getPanelsComponent(operationPanel.ADDPANEL);
+			this.detailPanel = (DetailPanel) operationPanel.getPanelsComponent(operationPanel.DETAILPANEL);
 		}
 	}
 }
-
