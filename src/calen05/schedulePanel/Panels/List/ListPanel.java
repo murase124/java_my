@@ -24,29 +24,41 @@ public class ListPanel extends JPanel{
 	JViewport vBar;
 
 	private List<Schedule> daySchedule;
-	public Schedule getSchedule(int selectID) {
-		return daySchedule.stream().filter(daySchedule -> daySchedule.getID() == selectID).collect(Collectors.toList()).get(0);//()) && (daySchedule.getEndDateTime().isAfter(start) || daySchedule.getEndDateTime().isEqual(start))).collect(Collectors.toList());
-		//return daySchedule.stream().filter(daySchedule -> daySchedule.getID()()) && (daySchedule.getEndDateTime().isAfter(start) || daySchedule.getEndDateTime().isEqual(start))).collect(Collectors.toList());
-		//return daySchedule.indexOf()
+	public Schedule getScheduleID(int selectID) {
+		return daySchedule.stream().filter(daySchedule -> daySchedule.getID() == selectID).collect(Collectors.toList()).get(0);
 	}
+	public Schedule getScheduleNum() {
+		return daySchedule.get(scheduleListPane.getChoiceLine());
+	} 
 	
 	//スケジュールディスプレイに追加
 	public void updateSchedule(List<Schedule> daySchedule) {
 		this.daySchedule = daySchedule;
+		this.daySchedule.sort((a,b)-> a.getID() - b.getID());
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		scheduleListPane.clearText();
-		for(int i=0;i < daySchedule.size();i++)
+		for(int i=0;i < this.daySchedule.size();i++)
 		scheduleListPane.append(
-				daySchedule.get(i).getStartDateTime().format(format) 
-				+ " " + daySchedule.get(i).getEndDateTime().format(format) 
-				+ " " +daySchedule.get(i).getTitle() 
+				this.daySchedule.get(i).getStartDateTime().format(format) 
+				+ " " + this.daySchedule.get(i).getEndDateTime().format(format) 
+				+ " " +this.daySchedule.get(i).getTitle() 
 				+ newLine);
-		scheduleListPane.append(newLine);
-		scheduleListPane.append("aaa" + newLine);
-		scheduleListPane.append("aaa" + newLine);
+		for(int i=0;i < this.daySchedule.size();i++)
+			scheduleListPane.append(
+					this.daySchedule.get(i).getStartDateTime().format(format) 
+					+ " " + this.daySchedule.get(i).getEndDateTime().format(format) 
+					+ " " +this.daySchedule.get(i).getTitle() 
+					+ newLine);
+		scheduleListPane.append("aaabbbbb" + newLine);
+		scheduleListPane.append("aaabbbbbb" + newLine);
+		for(int i=0;i < this.daySchedule.size();i++)
+			scheduleListPane.append(
+					this.daySchedule.get(i).getStartDateTime().format(format) 
+					+ " " + this.daySchedule.get(i).getEndDateTime().format(format) 
+					+ " " +this.daySchedule.get(i).getTitle() 
+					+ newLine);
 		scheduleListPane.updateUI();
 		scrollpane.getViewport().setViewPosition(new Point(0, 0));
-		scheduleListPane.changeStyle();
 	}
 	
 	
