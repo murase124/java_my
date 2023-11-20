@@ -123,7 +123,7 @@ class MyPanel extends JPanel implements MouseListener, MouseMotionListener{
 		color = new Color(color_box[0], color_box[1], color_box[2]);
 		g.setColor(color);
 		g.fillRect(e.getX() - size/2, e.getY() - size/2, size, size);
-
+		paint_update();
 	}
 	
 	@Override

@@ -31,7 +31,7 @@ public class DB {
 				sql2 = sql.replaceFirst("?", replace[i]);
 			}
 		}
-		new TextDBLog("db/schedule.txt", new String[] {sql2+"\r\n"});
+		new TextDBLog("calen/calen01/db.txt\";", new String[] {sql2+"\r\n"});
 		
 	}
 	

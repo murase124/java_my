@@ -18,7 +18,7 @@ public class DB {
 	final private String USERNAME ="javatest";
 	final private String PASSWORD ="";
 	final private String DRIVERTEXT ="org.hsqldb.jdbcDriver";
-	final private String LOGFILEURL ="calen01/schedule.txt";
+	final private String LOGFILEURL ="calen/calen04/db.txt\";";
 	final private String GETSCHEDULESQLTEXT ="SELECT * FROM schedules";
 	final private String GETSCHEDULESQLTEXT2 ="SELECT * FROM schedules WHERE startDate <= ? AND ifnull(endDate, startDate) > ? ORDER BY startDate";
 	final private String SETSCHEDULESQLTEXT2 = "INSERT INTO schedules (startDate, endDate,title,texts) VALUES ( ?, ?, ?, ?)";
